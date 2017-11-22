@@ -2,7 +2,7 @@ var stompClient = null;
 
 function setConnected(connected) {
     $('#connect').prop('disabled', connected);
-    $('#disconnect').prop('disabled', connected);
+    $('#disconnect').prop('disabled', !connected);
 
     if (connected)
         $('#conversation').show();
@@ -15,7 +15,7 @@ function setConnected(connected) {
 function connect() {
     var socket = new SockJS('/gs-guide-websocket');
     stompClient = Stomp.over(socket);
-    stompClient.connected({}, function (frame) {
+    stompClient.connect({}, function (frame) {
         setConnected(true);
         console.log('Connected: ' + frame);
         stompClient.subscribe('/topic/greetings', function (greeting) {
